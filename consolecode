@@ -1,5 +1,5 @@
 const copyRef = copy;
-GraphsList = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs.map(hash => hash.hash)
+GraphsList2 = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs.map(hash => hash.hash)
 var len = GraphsList2.length;
 GraphsList = [];
 ParentGraphsList = [];
