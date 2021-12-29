@@ -5,12 +5,13 @@ GraphsList = [];
 ParentGraphsList = [];
 var thetitles = {};
 var thedates = {};
-
+//https://stackoverflow.com/a/7394787
 function decodeHtml(html) {
     var txt = document.createElement("textarea");
     txt.innerHTML = html;
     return txt.value;
 }
+
 async function desmopast(hash0) {
     let cur = hash0;
     var setdate = '';
@@ -49,10 +50,8 @@ for (let index = 0; index < batches; index++) {
     index2 = index + 1;
     console.log('[' + (index2) + '/' + batches + '] ' + new Array(batches.toString().length - index2.toString().length + 1).join(' ') + (new Array(index2 + 1).join('█') + new Array(batches - (index2) + 1).join('▒')));
 }
-
 console.log('Step 1 of 3 ✅\nHashes loaded!');
-
-
+//https://typeofnan.dev/an-easy-way-to-build-a-tree-with-object-references/
 data = [...Array(GraphsList.length).keys()].map(function(x) {
     return ({
         id: GraphsList[x],
