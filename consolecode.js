@@ -19,6 +19,10 @@ async function desmopast(hash0) {
           })
         ).json();
 
+        if (!json) {
+            break;
+        }
+
         if (json.created) {
             setdate = json.created;
         };
