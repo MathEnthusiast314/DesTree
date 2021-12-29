@@ -5,40 +5,37 @@ GraphsList = [];
 ParentGraphsList = [];
 var thetitles = {};
 var thedates = {};
-//https://stackoverflow.com/a/7394787
-function decodeHtml(html) {
-    var txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
-}
 
 async function desmopast(hash0) {
     let cur = hash0;
     var setdate = '';
     while (true) {
 
-        const html = await (await fetch(`https://www.desmos.com/calculator/${cur}`)).text();
-        const matches = html.match(/quot;parent_hash&quot;:&quot;([a-z0-9]{10,20})&quot;/);
-        const matches2 = html.match(/<meta property="og:title" content="(.*)"/);
-        const matches3 = html.match(/quot;created&quot;:&quot;(.*GMT)&quot;/);
+        const json = await (
+          await fetch(`https://www.desmos.com/calculator/${cur}`, {
+            headers: {
+              Accept: "application/json",
+            },
+          })
+        ).json();
 
-        if (matches3 != null) {
-            setdate = matches3[1]
+        if (json.created) {
+            setdate = json.created;
         };
-        thetitles[cur] = decodeHtml(matches2[1]);
+        thetitles[cur] = json.title;
         thedates[cur] = setdate;
-        if (GraphsList.includes(cur) == false) {
+        if (!GraphsList.includes(cur)) {
             GraphsList.push(cur);
-            if (!matches) {
+            if (!json.parent_hash) {
                 ParentGraphsList.push(null);
             } else {
-                ParentGraphsList.push(matches[1])
+                ParentGraphsList.push(json.parent_hash)
             };
         }
-        if (!matches) {
+        if (!json.parent_hash) {
             break
         };
-        cur = matches[1];
+        cur = json.parent_hash;
     }
 }
 
