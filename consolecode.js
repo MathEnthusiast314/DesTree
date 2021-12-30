@@ -11,16 +11,22 @@ async function desmopast(hash0) {
     var setdate = '';
     while (true) {
 
-        const json = await (
-          await fetch(`https://www.desmos.com/calculator/${cur}`, {
-            headers: {
-              Accept: "application/json",
-            },
-          })
-        ).json();
-
+        try {
+            json = await (
+                await fetch(`https://www.desmos.com/calculator/${cur}`, {
+                    headers: {
+                        Accept: "application/json",
+                    },
+                })
+            ).json()
+        } catch (err) {}
+        if (json) {
+            setdate = json.created;
+        }
         if (!json) {
-            break;
+            printlog();
+            json = {};
+            json.title = "Desmos | Graphing Calculator"
         }
 
         if (json.created) {
@@ -43,15 +49,23 @@ async function desmopast(hash0) {
     }
 }
 
-console.log('Please wait')
+console.log('Please wait');
+var saveprogressindex = 0;
 const batches = 20;
 for (let index = 0; index < batches; index++) {
     const promises = GraphsList2.slice(index * Math.ceil(len / batches), Math.ceil(len / batches) * (index + 1)).map(desmopast);
     await Promise.all(promises);
-    index2 = index + 1;
-    console.log('[' + (index2) + '/' + batches + '] ' + new Array(batches.toString().length - index2.toString().length + 1).join(' ') + (new Array(index2 + 1).join('█') + new Array(batches - (index2) + 1).join('▒')));
+    saveprogressindex = index;
+    printlog();
 }
 console.log('Step 1 of 3 ✅\nHashes loaded!');
+
+function printlog() {
+    console.clear();
+    console.log("Please wait");
+    index2 = saveprogressindex + 1
+    console.log('[' + (index2) + '/' + batches + '] ' + new Array(batches.toString().length - index2.toString().length + 1).join(' ') + (new Array(index2 + 1).join('█') + new Array(batches - (index2) + 1).join('▒')));
+}
 //https://typeofnan.dev/an-easy-way-to-build-a-tree-with-object-references/
 data = [...Array(GraphsList.length).keys()].map(function(x) {
     return ({
