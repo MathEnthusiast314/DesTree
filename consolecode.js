@@ -1,5 +1,5 @@
 const copyRef = copy;
-GraphsList2 = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs.map(x=>x.hash)
+GraphsList2 = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs.data.map(x=>x.hash)
 var len = GraphsList2.length;
 GraphsList = [];
 ParentGraphsList = [];
